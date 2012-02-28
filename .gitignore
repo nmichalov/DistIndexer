@@ -1,0 +1,4 @@
+CrawlData/
+*.pyc
+*.swp
+TargetURLs
