@@ -9,7 +9,7 @@ from LinkReducer import LinkReducer
 from SaveData import SaveData
 
 
-def crawl_batch(url_list, site_number):
+def main(url_list, site_number):
     current_dir = os.getcwd()
     site_key = site_number
     site_hash = {}
@@ -29,4 +29,4 @@ def crawl_batch(url_list, site_number):
 
 if __name__ == '__main__':
     start_urls = ['http://www.hackerschool.com']
-    crawl_batch(start_urls)
+    main(start_urls)
