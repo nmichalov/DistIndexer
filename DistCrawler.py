@@ -21,7 +21,6 @@ class Crawler:
         self.br.addheaders = [('user-agent', 'https://github.com/nmichalov')]
 
     def crawl(self, target):
-        self.content[target] = []
         self.links_to[target] = []
         self.visited.append(target)
         current_url_parts = urlparse.urlparse(target)
@@ -36,7 +35,7 @@ class Crawler:
                 p_tag = re.sub('\<\/?p\>|\<a href.*\<\/a\>', '', str(p_tag))
                 p_tag = re.sub('\<\/?[a-zA-Z0-9]+\>', '', p_tag)
                 p_tag = re.sub('[^A-Za-z]', ' ', p_tag)
-                self.content[target].append(p_tag.lower())
+                self.content[target] += ' '+p_tag.lower()
             for link in list(self.br.links()):
                 if '@' not in link.url and '?' not in link.url and '#' not in link.url:
                     link_parts =  urlparse.urlparse(link.url)
