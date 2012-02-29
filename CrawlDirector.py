@@ -19,7 +19,7 @@ class Director:
     def new_urls(self):
         return self.target_urls
 
-    def update_record(self, visited_url):
+    def update_record(self):
         self.visited_urls.append(self.target_urls)
         self.target_urls = []
 
