@@ -11,19 +11,14 @@ class LinkMapper:
         self.referrers = {}
         self.external_links = []
         
-    def proc_links(self, link_dict):
+    def map_links(self, link_dict):
         for k in link_dict:
             for v in link_dict[k]:
-                if not self.referrers.has_key(v):
-                    self.referrers[v] = [k,]
-                else:
+                if self.referrers.has_key(v):
                     self.referrers[v].append(k)
+                else:
+                    self.referrers[v] = [k,]
                     link_site = urlparse.urlparse(v).netloc
-                    if 'http://'+link_site not in self.external_urls:
+                    if 'http://'+link_site not in self.external_links:
                         self.external_links.append('http://'+link_site)
-    
-    def externals(self):
-        return self.external_links
-
-    def referrers(self):
-        return self.referrers
+        return self.external_links, self.referrers

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-from gensim import corpora, models, similarities
 
 class StoreContent:
 
@@ -14,20 +13,12 @@ class StoreContent:
 
     def write_content(self, page_content):
         for k in page_content:
-            if k not in self.page_key:
+            if not self.page_hash.has_key(k):
                 self.page_hash[k] = self.page_key
             out_file = '%s/%s' % (self.out_dir, str(self.page_key))
             page_file = open(out_file, 'a')
-            page_file.write(page_content[k])
+            for p_tag in page_content[k]:
+                page_file.write(p_tag.strip())
             page_file.close()
             self.page_key += 1
-
-       
-class ContentPro:
-    def __iter__(self, page_content):
-        yield dictionary.doc2bow(page_content.split())
-
-#class ContentModel:
- #   def topic_model(self, corpus):
-  #      lda = 
 

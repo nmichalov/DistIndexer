@@ -23,17 +23,18 @@ class Director:
         self.visited_urls.append(self.target_urls)
         self.target_urls = []
 
-def main():
-    director = Director()
-    daemon = Pyro4.Daemon()
-    daemon.register(director)
-    crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
-    #open and read a file
-    director.add_new()
-    current_batch = director.new_urls()
-    crawler = Crawler()
-    for link in current_batch:
-        print crawler.crawl(link)
+#def main():
+ #   director = Director()
+  #  daemon = Pyro4.Daemon()
+#    daemon.register(director)
+ #   crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
+  #  director.add_new()
+#    current_batch = director.new_urls()
+ #   crawler = Crawler()
+  #  for link in current_batch:
+   #     print crawler.crawl(link)
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+ #   target_url = raw_input('Enter a URL to crawl: ')
+  #  url = [target_url]
+   # main(url)
