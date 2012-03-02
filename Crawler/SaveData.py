@@ -19,7 +19,7 @@ class SaveData:
             out_file = '%s/%s' % (self.out_dir, str(self.page_key))
             page_file = open(out_file, 'a')
             for p_tag in page_content[k]:
-                page_file.write(p_tag.strip())
+                page_file.write(p_tag.strip()+' ')
             page_file.close()
             self.page_key += 1
 

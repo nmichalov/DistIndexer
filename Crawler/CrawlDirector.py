@@ -12,10 +12,12 @@ class Director:
         self.target_urls = []
         self.visited_urls = []
 
-    def add_new(self, url_list):
-        for url in url_list:
-            if url not in self.visited_urls:
-                self.target_urls.append(url)
+    def add_new(self):
+        url_file = open('URLlist', 'r')
+        for line in url_file:
+            line = line.strip()
+            if line not in self.visited_urls:
+                self.target_urls.append(line)
         
     def new_urls(self):
         return self.target_urls
@@ -24,21 +26,21 @@ class Director:
         self.visited_urls.append(self.target_urls)
         self.target_urls = []
 
-def main(start_url):
+def main():
+    site_index = 0
     director = Director()
     daemon = Pyro4.Daemon()
     daemon.register(director)
     crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
-    director.add_new(start_url)
+    director.add_new()
     current_batch = director.new_urls()
     crawler = Crawler()
     for link in current_batch:
-        savedata = SaveData(0)
-        links, content = crawler.crawl(link)
+        savedata = SaveData(site_index)
+        content, links = crawler.crawl(link)
         savedata.save_content(content)
         savedata.save_links(links)
+        site_index += 1
 
 if __name__ == "__main__":
-    target_url = raw_input('Enter a URL to crawl: ')
-    url = [target_url]
-    main(url)
+        main()
