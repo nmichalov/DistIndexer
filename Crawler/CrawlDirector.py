@@ -4,6 +4,7 @@ import sys
 import Pyro4
 import os
 from DistCrawler import Crawler
+from SaveData import SaveData
 
 class Director:
     
@@ -23,18 +24,21 @@ class Director:
         self.visited_urls.append(self.target_urls)
         self.target_urls = []
 
-#def main():
- #   director = Director()
-  #  daemon = Pyro4.Daemon()
-#    daemon.register(director)
- #   crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
-  #  director.add_new()
-#    current_batch = director.new_urls()
- #   crawler = Crawler()
-  #  for link in current_batch:
-   #     print crawler.crawl(link)
+def main(start_url):
+    director = Director()
+    daemon = Pyro4.Daemon()
+    daemon.register(director)
+    crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
+    director.add_new(start_url)
+    current_batch = director.new_urls()
+    crawler = Crawler()
+    for link in current_batch:
+        savedata = SaveData(0)
+        links, content = crawler.crawl(link)
+        savedata.save_content(content)
+        savedata.save_links(links)
 
-#if __name__ == "__main__":
- #   target_url = raw_input('Enter a URL to crawl: ')
-  #  url = [target_url]
-   # main(url)
+if __name__ == "__main__":
+    target_url = raw_input('Enter a URL to crawl: ')
+    url = [target_url]
+    main(url)
