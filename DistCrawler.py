@@ -12,16 +12,13 @@ from time import sleep
 class Crawler:
 
     def __init__(self):
+        self.data= []
         self.visited = []
         self.internal_urls = []
-        self.links_to = {}
-        self.content = {}
         self.br = mechanize.Browser()
         self.br.addheaders = [('user-agent', 'https://github.com/nmichalov')]
 
     def crawl(self, target):
-        self.links_to[target] = []
-        self.content[target] = []
         self.visited.append(target)
         current_url_parts = urlparse.urlparse(target)
         try:
@@ -35,7 +32,7 @@ class Crawler:
                 p_tag = re.sub('\<\/?p\>|\<a href.*\<\/a\>', '', str(p_tag))
                 p_tag = re.sub('\<\/?[a-zA-Z0-9]+\>', '', p_tag)
                 p_tag = re.sub('[^A-Za-z]', ' ', p_tag)
-                self.content[target].append(p_tag.lower())
+                self.data.append('Content#%s#%s') % (target, p_tag.lower()) 
             for link in list(self.br.links()):
                 if '@' not in link.url and '?' not in link.url and '#' not in link.url:
                     link_parts =  urlparse.urlparse(link.url)
@@ -44,23 +41,22 @@ class Crawler:
                         if link not in self.visited and link not in self.internal_urls:
                             self.internal_urls.append(link)
                     else:
-                        link = 'http://'+link_parts.netloc+link_parts.path
-                        self.links_to[target].append(link)
+                        link = 'http://%s' % (urlparse.urlparse(link.url).netloc)
+                        if link not in self.urls:
+                            self.data.append(link)
+                        
             sleep(1)
         if len(self.internal_urls) > 0:
             next_target = self.internal_urls.pop()
             self.crawl(next_target)
-        return self.content, self.links_to
+        else:
+            return self.data
 
 
-
-def main():
+if __name__ == '__main__':
     crawler = Crawler()
     daemon = Pyro4.Daemon()
     crawler_uri = daemon.register(crawler)
     ns = Pyro4.locateNS()
     ns.register('indexer.distcrawler', crawler_uri)
     daemon.requestLoop()
-
-if __name__ == "__main__":
-    main()

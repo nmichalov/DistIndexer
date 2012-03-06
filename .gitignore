@@ -1,6 +1,8 @@
 *.pyc
 *.swp
+*~
 TargetURLs
 URLlist
 [0-9]/
 Test/
+CrawlData/
