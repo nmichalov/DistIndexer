@@ -12,7 +12,6 @@ from time import sleep
 class Crawler:
 
     def __init__(self):
-        self.data= []
         self.visited = []
         self.internal_urls = []
         self.br = mechanize.Browser()
@@ -32,7 +31,7 @@ class Crawler:
                 p_tag = re.sub('\<\/?p\>|\<a href.*\<\/a\>', '', str(p_tag))
                 p_tag = re.sub('\<\/?[a-zA-Z0-9]+\>', '', p_tag)
                 p_tag = re.sub('[^A-Za-z]', ' ', p_tag)
-                self.data.append('Content#%s#%s') % (target, p_tag.lower()) 
+                print 'Content#%s#%s' % (target, p_tag.lower()) 
             for link in list(self.br.links()):
                 if '@' not in link.url and '?' not in link.url and '#' not in link.url:
                     link_parts =  urlparse.urlparse(link.url)
@@ -42,15 +41,12 @@ class Crawler:
                             self.internal_urls.append(link)
                     else:
                         link = 'http://%s' % (urlparse.urlparse(link.url).netloc)
-                        if link not in self.urls:
-                            self.data.append(link)
+                        print link
                         
             sleep(1)
         if len(self.internal_urls) > 0:
             next_target = self.internal_urls.pop()
             self.crawl(next_target)
-        else:
-            return self.data
 
 
 if __name__ == '__main__':

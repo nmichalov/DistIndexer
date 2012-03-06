@@ -35,5 +35,5 @@ if __name__ == '__main__':
     datareduce = DataReduce()
     for line in sys.stdin:
         line = line.strip()
-        datareduce.main(line)
+        datareduce.reduce_data(line)
     datareduce.return_urls()
