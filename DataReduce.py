@@ -14,16 +14,17 @@ class DataReduce:
             os.mkdir(self.data_dir)
 
     def reduce_data(self, crawl_data):
-        if crawl_data.startswith('Content#'):
-            crawl_data = crawl_data.split('#')
-            url_file = re.sub('\/', ' ', crawl_data[1])
-            out_file = '%s/%s' % (self.data_dir, url_file)
-            content_file = open(out_file, 'a')
-            content_file.write(crawl_data[2]+' ')
-            content_file.close()
-        else:
-            if crawl_data not in self.unique_domains:
-                self.unique_domains.append(crawl_data)
+        if type(crawl_data) == str:
+            if crawl_data.startswith('Content#'):
+                crawl_data = crawl_data.split('#')
+                url_file = re.sub('\/', ' ', crawl_data[1])
+                out_file = '%s/%s' % (self.data_dir, url_file)
+                content_file = open(out_file, 'a')
+                content_file.write(crawl_data[2]+' ')
+                content_file.close()
+            else:
+                if crawl_data not in self.unique_domains:
+                    self.unique_domains.append(crawl_data)
 
     def return_urls(self):
             url_file = open('URLlist', 'a')

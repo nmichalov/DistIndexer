@@ -30,24 +30,20 @@ class Director:
         visited_list.close()
 
 def main():
+    director = Director()
+    crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
     urls = []
     url_file = open('URLlist', 'r')
     for line in url_file:
         line = line.strip()
         director.add_new(line)
     target_urls = director.new_urls()
-    crawler = Crawler()
-    datareduce = DataReduce()
+#    datareduce = DataReduce()
     for link in target_urls:
         data = crawler.crawl(link)
-        datareduce.reduce_data(data)
-    datareduce.return_urls()
-
-if __name__ == "__main__":
-    director = Director()
-    daemon = Pyro4.Daemon()
-    daemon.register(director)
-    crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
-    main()
+#        datareduce.reduce_data(data)
+#    datareduce.return_urls()
     director.update_record()
 
+if __name__ == "__main__":
+    main()
