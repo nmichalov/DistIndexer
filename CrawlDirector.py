@@ -4,7 +4,6 @@ import sys
 import Pyro4
 import os
 import cPickle
-from DataReduce import DataReduce
 
 class Director:
     
@@ -30,12 +29,8 @@ class Director:
 
 def main():
     director = Director()
-#    daemon = Pyro4.Daemon()
     ns = Pyro4.locateNS()
-#    director_uri = daemon.register(director)
-#    ns.register('director', director_uri)
-    crawler_uri = ns.lookup('distcrawler')
-    print crawler_uri
+    crawler_uri = ns.lookup('Crawler')
     crawler = Pyro4.Proxy(crawler_uri)
     urls = []
     url_file = open('URLlist', 'r')
@@ -43,14 +38,9 @@ def main():
         line = line.strip()
         director.add_new(line)
     target_urls = director.new_urls()
-    print target_urls
-#    datareduce = DataReduce()
-#    for link in target_urls:
-#         crawler.crawl(link)
-    crawler.crawl('http://www.hackerschool.com')
-#        datareduce.reduce_data(data)
-#    datareduce.return_urls()
-#    director.update_record()
+    for link in target_urls:
+         crawler.crawl(link)
+    director.update_record()
 
 if __name__ == "__main__":
     main()
