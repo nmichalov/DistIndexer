@@ -52,7 +52,7 @@ class Crawler:
 if __name__ == '__main__':
     crawler = Crawler()
     daemon = Pyro4.Daemon()
-    crawler_uri = daemon.register(crawler)
     ns = Pyro4.locateNS('192.168.1.106')
-    ns.register('indexer.distcrawler', crawler_uri)
+    crawler_uri = daemon.register(crawler)
+    ns.register('distcrawler', crawler_uri)
     daemon.requestLoop()

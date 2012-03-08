@@ -31,7 +31,7 @@ class Director:
 
 def main():
     director = Director()
-    crawler = Pyro4.Proxy('PYRONAME:indexer.crawler')
+    crawler = Pyro4.Proxy('PYRONAME:distcrawler')
     urls = []
     url_file = open('URLlist', 'r')
     for line in url_file:
@@ -40,7 +40,7 @@ def main():
     target_urls = director.new_urls()
 #    datareduce = DataReduce()
     for link in target_urls:
-        data = crawler.crawl(link)
+         crawler.crawl(link)
 #        datareduce.reduce_data(data)
 #    datareduce.return_urls()
     director.update_record()
