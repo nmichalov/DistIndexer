@@ -10,7 +10,9 @@ class Director:
     def __init__(self):
         self.target_urls = []
         if os.path.exists('Visited.pkl'):
-            self.visited_urls = cPickle.load('Visited.pkl')
+            visited = open('Visited.pkl', 'r')
+            self.visited_urls = cPickle.load(visited)
+            visited.close()
         else:
             self.visited_urls = []
 
@@ -28,8 +30,9 @@ class Director:
         visited_list.close()
 
 def main():
+    ns_host = raw_input('enter nameserver ip: ')
     director = Director()
-    ns = Pyro4.locateNS()
+    ns = Pyro4.naming.locateNS(ns_host)
     crawler_uri = ns.lookup('Crawler')
     crawler = Pyro4.Proxy(crawler_uri)
     urls = []
